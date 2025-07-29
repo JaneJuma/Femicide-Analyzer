@@ -1,2 +1,2 @@
 # Femicide-Analyzer
-A sysstem to track femicide cases occurrences in Kenya
+A system to track femicide cases occurrences in Kenya
