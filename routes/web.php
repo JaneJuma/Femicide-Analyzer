@@ -17,4 +17,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index']);
+});
+
+Route::middleware(['auth', 'role:moderator,admin'])->group(function () {
+    Route::get('/verify-cases', [CaseController::class, 'verify']);
+});
+
+require __DIR__ . '/auth.php';
