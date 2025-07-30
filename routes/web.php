@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CaseController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,14 +16,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/cases/create', [CaseController::class, 'create'])->name('cases.create');
+    Route::post('/cases', [CaseController::class, 'store'])->name('cases.store');
 });
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index']);
-});
-
-Route::middleware(['auth', 'role:moderator,admin'])->group(function () {
-    Route::get('/verify-cases', [CaseController::class, 'verify']);
-});
 
 require __DIR__ . '/auth.php';
