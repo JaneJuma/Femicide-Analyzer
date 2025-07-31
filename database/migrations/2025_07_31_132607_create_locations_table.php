@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('locations', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // 👈 BIGINT UNSIGNED PRIMARY KEY (default)
+            $table->string('county', 100)->nullable();
+            $table->string('location_type', 100)->nullable();
             $table->timestamps();
         });
     }

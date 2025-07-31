@@ -12,15 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cases', function (Blueprint $table) {
-            $table->id();
-            $table->string('victim_name');
-            $table->integer('age')->nullable();
+            $table->id(); // default BIGINT UNSIGNED PK
+            $table->foreignId('victim_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('perpetrator_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('perpetrator_id')->nullable()->constrained('perpetrators')->onDelete('set null');
             $table->date('date');
             $table->string('method');
             $table->text('description')->nullable();
             $table->string('ob_number')->nullable();
-            $table->foreignId('location_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // who submitted
+            $table->foreignId('location_id')->constrained()->onDelete('cascade'); // ✅ now works with locations.id
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->boolean('verified')->default(false);
             $table->timestamps();
         });
