@@ -11,15 +11,35 @@ class CaseModel extends Model
 
     protected $table = 'cases';
 
+    // CaseModel.php
     protected $fillable = [
-        'victim_name',
-        'age',
+        'victim_id',
+        'perpetrator_id',
+        'location_id',
         'date',
         'method',
         'description',
         'ob_number',
-        'location_id',
+        // 'county',
+        // 'location_type',
         'user_id',
-        'verified',
+        // 'verified'
     ];
+
+    //Relationship
+    public function victim()
+    {
+        return $this->belongsTo(VictimModel::class);
+    }
+
+    // Perpetrator relationship
+    public function perpetrator()
+    {
+        return $this->belongsTo(PerpetratorModel::class);
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
 }

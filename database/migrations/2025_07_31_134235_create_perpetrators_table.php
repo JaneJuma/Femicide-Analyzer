@@ -17,13 +17,14 @@ return new class extends Migration
                 $table->id();
                 // $table->uuid('case_id');
                 // $table->foreignId('case_id')->constrained('cases')->onDelete('cascade');
-                $table->string('full_name')->nullable();
+                $table->string('perpetrator_name')->nullable();
                 // $table->string('last_name')->nullable();
-                $table->integer('age')->nullable();
+                $table->integer('perpetrator_age')->nullable();
                 // $table->string('gender', 10)->nullable();
                 $table->string('relationship_to_victim', 100)->nullable();
-                // $table->text('criminal_history')->nullable();
-                // $table->text('motive_details')->nullable();
+                $table->text('perpetrator_occupation')->nullable();
+                $table->text('known_to_victim')->nullable();
+                $table->text('perpetrator_status')->nullable();
                 $table->timestamps();
             }
         );

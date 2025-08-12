@@ -15,15 +15,12 @@ return new class extends Migration
             'victims',
             function (Blueprint $table) {
                 $table->id();
-                $table->string('full_name')->nullable();
-                $table->integer('age')->nullable();
+                $table->string('victim_name')->nullable();
+                $table->integer('victim_age')->nullable();
                 // $table->string('gender', 10)->default('Female');
-                $table->string('occupation')->nullable();
-                $table->string('marital_status', 50)->nullable();
-                // $table->string('nationality', 100)->nullable();
-                $table->string('education_level', 100)->nullable();
-                // $table->string('socio_economic_status', 100)->nullable();
-                // $table->date('date_of_birth')->nullable();
+                $table->string('victim_occupation')->nullable();
+                $table->string('victim_marital_status', 100)->nullable();
+                $table->string('victim_education_level', 100)->nullable();
                 $table->timestamps();
             }
         );
