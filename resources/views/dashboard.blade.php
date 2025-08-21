@@ -42,7 +42,7 @@
                         <th class="px-4 py-2 border">Age</th>
                         <th class="px-4 py-2 border">Location</th>
                         <th class="px-4 py-2 border">Date</th>
-                        <th class="px-4 py-2 border">Status</th>
+                        <th class="px-4 py-2 border">Perpetrator Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,7 +52,7 @@
                         <td class="px-4 py-2 border">{{ $case->victim->victim_age ?? 'N/A' }}</td>
                         <td class="px-4 py-2 border">{{ $case->location->county ?? 'N/A' }}</td>
                         <td class="px-4 py-2 border">{{ $case->date }}</td>
-                        <td class="px-4 py-2 border">{{ ucfirst($case->perpetrator->status ?? 'Unknown') }}</td>
+                        <td class="px-4 py-2 border">{{ ucfirst($case->perpetrator->perpetrator_status ?? 'Unknown') }}</td>
                     </tr>
                     @endforeach
                 </tbody>

@@ -17,24 +17,54 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen flex flex-col">
+
+        <!-- Top Navbar (logo + profile) -->
         @include('layouts.navigation')
 
-        <!-- Page Heading -->
-        @isset($header)
-        <header class="bg-white shadow">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                {{ $header }}
-            </div>
-        </header>
-        @endisset
+        <div class="flex flex-1">
+            <!-- Sidebar -->
+            <aside class="w-64 bg-white border-r shadow-sm">
+                <nav class="p-4 space-y-2 overflow-y-auto h-full">
+                    <a href="{{ route('dashboard') }}"
+                        class="block px-4 py-2 rounded 
+              {{ request()->routeIs('dashboard') ? 'bg-red-600 text-white' : 'hover:bg-red-100 text-gray-700' }}">
+                        📊 Dashboard
+                    </a>
 
-        <!-- Page Content -->
-        <main>
+                    <a href="{{ route('cases.index') }}"
+                        class="block px-4 py-2 rounded 
+              {{ request()->routeIs('cases.index') ? 'bg-red-600 text-white' : 'hover:bg-red-100 text-gray-700' }}">
+                        📁 Cases
+                    </a>
 
-            {{ $slot }}
+                    <a href="{{ route('cases.create') }}"
+                        class="block px-4 py-2 rounded 
+              {{ request()->routeIs('cases.create') ? 'bg-red-600 text-white' : 'hover:bg-red-100 text-gray-700' }}">
+                        ➕ Add Case
+                    </a>
 
-        </main>
+                    <!-- <a href="{{ route('cases.export.csv') }}"
+                        class="block px-4 py-2 rounded 
+              {{ request()->routeIs('cases.export.csv') ? 'bg-red-600 text-white' : 'hover:bg-red-100 text-gray-700' }}">
+                        📄 Export CSV
+                    </a>
+
+                    <a href="{{ route('cases.export.pdf') }}"
+                        class="block px-4 py-2 rounded 
+              {{ request()->routeIs('cases.export.pdf') ? 'bg-red-600 text-white' : 'hover:bg-red-100 text-gray-700' }}">
+                        📑 Export PDF
+                    </a> -->
+                </nav>
+
+            </aside>
+
+
+            <!-- Main Content -->
+            <main class="flex-1 bg-gray-100 p-6">
+                {{ $slot }}
+            </main>
+        </div>
     </div>
 </body>
 

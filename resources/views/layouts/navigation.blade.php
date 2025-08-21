@@ -6,16 +6,22 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
+                        <img src="">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
+                <!-- <a href="{{ url('/') }}" class="flex items-center space-x-2">
+                    <img src="{{ asset('images/femicide-logo.png') }}" alt="Logo" style="height: 80px !important; width: auto;">
+                    <span class="font-bold text-xl text-red-600">Femicide Analyzer</span>
+                </a> -->
+
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <!-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Femicide Pattern Analyzer') }}
                     </x-nav-link>
-                </div>
+                </div> -->
             </div>
 
             <!-- Settings Dropdown -->
@@ -43,7 +49,7 @@
                             @csrf
 
                             <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                                onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
@@ -89,7 +95,7 @@
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
+                        onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>

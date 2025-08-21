@@ -7,6 +7,7 @@ use App\Models\VictimModel;
 use App\Models\PerpetratorModel;
 use App\Models\Location;
 use App\Models\CaseModel;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 
 class CaseController extends Controller
@@ -41,7 +42,7 @@ class CaseController extends Controller
             });
         }
 
-        $cases = $query->latest()->paginate(10);
+        $cases = $query->latest()->paginate(5);
 
         // Fetch distinct counties and location types for dropdowns
         $counties = \App\Models\Location::select('county')->distinct()->pluck('county');
@@ -133,5 +134,60 @@ class CaseController extends Controller
 
 
         return redirect()->route('cases.create')->with('success', 'Case submitted successfully.');
+    }
+
+    public function show(CaseModel $case)
+    {
+        // Load related victim, perpetrator, location
+        $case->load(['victim', 'perpetrator', 'location']);
+
+        return view('cases.show', compact('case'));
+    }
+
+
+    public function exportPdf()
+    {
+        $cases = \App\Models\CaseModel::with(['victim', 'perpetrator', 'location'])->get();
+
+        $pdf = Pdf::loadView('exports.cases_pdf', compact('cases'));
+
+        return $pdf->download('cases_report.pdf');
+    }
+
+    public function exportCsv()
+    {
+        $fileName = 'cases.csv';
+
+        $cases = \App\Models\CaseModel::with(['victim', 'perpetrator', 'location'])->get();
+
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $columns = ['Victim Name', 'Victim Age', 'Perpetrator Name', 'Status', 'County', 'Date', 'Method'];
+
+        $callback = function () use ($cases, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($cases as $case) {
+                fputcsv($file, [
+                    $case->victim->victim_name ?? 'N/A',
+                    $case->victim->victim_age ?? 'N/A',
+                    $case->perpetrator->perpetrator_name ?? 'N/A',
+                    $case->perpetrator_status ?? 'N/A',
+                    $case->location->county ?? 'N/A',
+                    $case->date,
+                    $case->method
+                ]);
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CaseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExportController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,9 +20,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/cases/create', [CaseController::class, 'create'])->name('cases.create');
     Route::post('/cases', [CaseController::class, 'store'])->name('cases.store');
-    // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
     Route::get('/cases', [CaseController::class, 'index'])->name('cases.index');
+    Route::get('/cases/{case}', [CaseController::class, 'show'])->name('cases.show');
+    Route::get('/cases/export/csv', [CaseController::class, 'exportCsv'])->name('cases.export.csv');
+    // Route::get('/cases/export/pdf', [ExportController::class, 'exportPdf'])->name('cases.export.pdf');
+    Route::get('/cases/export/pdf', [CaseController::class, 'exportPdf'])->name('cases.export.pdf');
 });
 
 
