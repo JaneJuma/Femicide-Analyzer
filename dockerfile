@@ -1,41 +1,36 @@
-# ---- 1) Build PHP dependencies
-FROM composer:2 AS vendor
-WORKDIR /app
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --prefer-dist --no-interaction --no-progress
-COPY . .
-RUN composer dump-autoload --optimize
+# Use official PHP image with Apache
+FROM php:8.2-apache
 
-# ---- 2) Build front-end (Vite)
-FROM node:20-alpine AS assets
-WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci
-COPY . .
-RUN npm run build
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git unzip curl libpng-dev libonig-dev libxml2-dev zip libzip-dev \
+    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# ---- 3) Final runtime (Nginx + PHP-FPM + Supervisor)
-FROM php:8.3-fpm-alpine
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
 
-# System deps
-RUN apk add --no-cache nginx supervisor bash icu-dev libpng-dev libzip-dev oniguruma-dev \
-    && docker-php-ext-install pdo pdo_mysql pdo_pgsql intl gd zip
+# Install Composer
+COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
+# Set working directory
 WORKDIR /var/www/html
 
-# Copy app
-COPY --from=vendor /app /var/www/html
-COPY --from=assets /app/public/build /var/www/html/public/build
+# Copy project files
+COPY . .
 
-# Nginx & Supervisor config
-COPY docker/nginx.conf /etc/nginx/nginx.conf
-COPY docker/site.conf /etc/nginx/http.d/default.conf
-COPY docker/supervisord.conf /etc/supervisord.conf
-COPY docker/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
 
-# Permissions (storage/logs)
+# Install Node & build assets
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install && npm run build
+
+# Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
+# Expose port
 EXPOSE 8080
-ENTRYPOINT ["/entrypoint.sh"]
+
+# Start Laravel with PHP’s built-in server
+CMD php artisan serve --host=0.0.0.0 --port=8080

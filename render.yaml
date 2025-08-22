@@ -1,15 +1,9 @@
 services:
   - type: web
     name: femicide-analyzer
-    env: php
     plan: free
-    buildCommand: |
-      composer install --no-dev --optimize-autoloader
-      php artisan config:clear
-      php artisan route:clear
-      php artisan view:clear
-      php artisan migrate --force
-    startCommand: php artisan serve --host 0.0.0.0 --port 8080
+    env: docker
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: APP_ENV
         value: production
@@ -17,17 +11,14 @@ services:
         generateValue: true
       - key: APP_DEBUG
         value: false
+      - key: APP_URL
+        value: https://femicide-analyzer.onrender.com
       - key: DB_CONNECTION
         value: mysql
-      # These DB settings will come from Render's Database service if you add one
       - key: DB_HOST
         fromDatabase:
           name: femicide-db
           property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: femicide-db
-          property: port
       - key: DB_DATABASE
         fromDatabase:
           name: femicide-db
