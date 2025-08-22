@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/cases/export/csv', [CaseController::class, 'exportCsv'])->name('cases.export.csv');
     // Route::get('/cases/export/pdf', [ExportController::class, 'exportPdf'])->name('cases.export.pdf');
     Route::get('/cases/export/pdf', [CaseController::class, 'exportPdf'])->name('cases.export.pdf');
+    Route::get('/', function () {
+        return view('welcome');
+    });
 });
 
 
