@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/images/logo.png" alt="Femicide Analyzer Logo" width="200"/>
+  <img src="public/images/femicide-logo.png" alt="Femicide Analyzer Logo" width="200"/>
 </p>
 
 # Femicide Crime Pattern Analyzer (Kenya)
@@ -57,7 +57,7 @@ The system allows reporting, tracking, and exporting of cases while providing us
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/Femicide-Analyzer.git
+git clone https://github.com/JaneJuma/Femicide-Analyzer.git
 cd Femicide-Analyzer
 ```
 
