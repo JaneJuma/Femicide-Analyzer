@@ -39,7 +39,7 @@ The system allows reporting, tracking, and exporting of cases while providing us
 
 ## 📽️ Demonstration Video
 
-👉 [Watch Demo on YouTube](https://youtube.com/your-demo-link-here)
+👉 [Watch Demo on YouTube](https://youtu.be/Q0mVPaQuD9k)
 
 ---
 
@@ -85,6 +85,8 @@ Serve the application:
 php artisan serve
 
 Visit http://127.0.0.1:8000
+
+To import the database, use the SQL dump provided in /database/export/femicide_analyzer.sql.
 
 📂 Project Structure
 
